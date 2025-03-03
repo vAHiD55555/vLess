@@ -1,0 +1,162 @@
+//profile-title: base64:VFVJQyBPTiBTSU5HQk9Y
+//profile-update-interval: 48
+//subscription-userinfo: upload=64424500944; download=45097156608; total=107370041824000; expire=1762646400
+//support-url:  https://t.me/F_NiREvil
+//profile-web-page-url: https://github.com/NiREvil
+
+{
+  "dns": {
+    "servers": [
+      {
+        "tag": "dns-remote",
+        "address": "udp://1.1.1.1",
+        "address_resolver": "dns-direct"
+      },
+      {
+        "tag": "dns-direct",
+        "address": "1.1.1.1",
+        "address_resolver": "dns-local",
+        "detour": "direct"
+      },
+      {
+        "tag": "dns-local",
+        "address": "local",
+        "detour": "direct"
+      },
+      {
+        "tag": "dns-block",
+        "address": "rcode://success"
+      }
+    ],
+    "rules": [
+      {
+        "domain": "2tnc6zpc9c.cloudflare-gateway.com",
+        "server": "dns-direct"
+      },
+      {
+        "geosite": "category-ads-all",
+        "server": "dns-block",
+        "disable_cache": true
+      }
+    ],
+    "fakeip": {
+      "enabled": true,
+      "inet4_range": "198.18.0.0/15",
+      "inet6_range": "fc00::/18"
+    },
+    "independent_cache": true
+  },
+  "inbounds": [
+    {
+      "type": "direct",
+      "tag": "dns-in",
+      "listen": "0.0.0.0",
+      "listen_port": 16450,
+      "override_address": "8.8.8.8",
+      "override_port": 53
+    },
+    {
+      "type": "tun",
+      "tag": "tun-in",
+      "interface_name": "tun0",
+      "mtu": 9000,
+      "auto_route": true,
+      "strict_route": true,
+      "endpoint_independent_nat": true,
+      "stack": "system",
+      "sniff": true,
+      "inet4_address": "172.19.0.1/30"
+    },
+    {
+      "type": "mixed",
+      "tag": "mixed-in",
+      "listen": "0.0.0.0",
+      "listen_port": 2080,
+      "sniff": true
+    }
+  ],
+  "outbounds": [
+    {
+      "type": "tuic",
+      "tag": "🇳🇱 tuic",
+      "server": "62.60.217.48",
+      "server_port": 11223,
+      "uuid": "8481b0a8-f20b-4671-8e05-a060efece75b",
+      "password": "63cd0123c7b46eb1",
+      "congestion_control": "bbr",
+      "tls": {
+        "enabled": true,
+        "insecure": true,
+        "alpn": [
+          "h3",
+          "spdy/3.1"
+        ]
+      }
+    },
+    {
+      "type": "direct",
+      "tag": "direct"
+    },
+    {
+      "type": "direct",
+      "tag": "bypass"
+    },
+    {
+      "type": "block",
+      "tag": "block"
+    },
+    {
+      "type": "dns",
+      "tag": "dns-out"
+    }
+  ],
+  "route": {
+    "rules": [
+      {
+        "port": 53,
+        "outbound": "dns-out"
+      },
+      {
+        "inbound": "dns-in",
+        "outbound": "dns-out"
+      },
+      {
+        "network": "udp",
+        "port": 443,
+        "outbound": "block"
+      },
+      {
+        "geosite": "category-ads-all",
+        "outbound": "block"
+      },
+      {
+        "geosite": "all",
+        "outbound": "bypass"
+      },
+      {
+        "geoip": "ir",
+        "outbound": "bypass"
+      },
+      {
+        "geosite": "ads",
+        "outbound": "block"
+      },
+      {
+        "geoip": "private",
+        "outbound": "bypass"
+      },
+      {
+        "source_ip_cidr": [
+          "224.0.0.0/3",
+          "ff00::/8"
+        ],
+        "ip_cidr": [
+          "224.0.0.0/3",
+          "ff00::/8"
+        ],
+        "outbound": "block"
+      }
+    ],
+    "auto_detect_interface": true
+  }
+}
