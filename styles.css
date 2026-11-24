@@ -1,0 +1,7 @@
+:root { --accent: #4f7cff; }
+* { box-sizing: border-box; }
+body { margin: 0; font-family: system-ui, sans-serif; background: #f6f8fc; color: #16233d; }
+main { max-width: 640px; margin: 0 auto; padding: 32px 20px; }
+h1 { color: var(--accent); }
+button { background: var(--accent); color: #fff; border: 0; border-radius: 10px;
+  padding: 12px 20px; font-size: 16px; cursor: pointer; }
